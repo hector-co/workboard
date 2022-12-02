@@ -24,14 +24,7 @@ public class BoardsControllerTest
     [Fact]
     public async Task RegisterBoardTest()
     {
-        var cmd = new RegisterBoard(
-            "test-board",
-            new List<RegisterBoard.RegisterColumn>
-            {
-                new RegisterBoard.RegisterColumn("col1", 0),
-                new RegisterBoard.RegisterColumn("col2", 1),
-                new RegisterBoard.RegisterColumn("col3", 2)
-            });
+        var cmd = new RegisterBoard("test-board");
 
         var response = await _client.Request("workboard/boards")
             .PostJsonAsync(cmd)
@@ -40,5 +33,7 @@ public class BoardsControllerTest
         response.Should().NotBeNull();
         response.Data.Should().NotBeNull();
         response.Data!.Id.Should().BeGreaterThan(0);
+
+        response.Data!.Columns.Count.Should().Be(3);
     }
 }

@@ -5,7 +5,30 @@
     "databaseSchema": "workboard"
   },
   "model": {
+    "Board": {
+      "properties": {
+        "Name": {
+          "typeName": "string",
+          "size": 100
+        },
+        "Columns": "List<Column>"
+      }
+    },
+    "Column": {
+      "properties": {
+        "Name": {
+          "typeName": "string",
+          "size": 100
+        },
+        "CardState": "CardState",
+        "Order": "int"
+      },
+      "isRoot": false
+    }
   },
   "enums": {
+    "CardState": {
+      "values": [ "NotStarted", "InProgress", "Done", "Accepted", "Declined" ]
+    }
   }
 }

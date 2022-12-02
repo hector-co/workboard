@@ -9,7 +9,10 @@ using Microsoft.Extensions.Logging;
 using QueryX;
 using Serilog;
 using Workboard.Application.Behaviors;
+using Workboard.Application.Commands.Boards;
+using Workboard.Domain.Model;
 using Workboard.Infrastructure.DataAccess.EF;
+using Workboard.Infrastructure.DataAccess.EF.Boards;
 
 namespace Workboard.Infrastructure
 {
@@ -26,7 +29,7 @@ namespace Workboard.Infrastructure
                 .AddFluentValidationAutoValidation()
                 .AddValidatorsFromAssemblyContaining(typeof(ValidationBehavior<,>));
 
-            builder.Services.AddMediatR(typeof(WorkboardContext)/*, typeof(WorkboardCommand)*/);
+            builder.Services.AddMediatR(typeof(WorkboardContext), typeof(RegisterBoard));
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             builder.Services.AddQueryX();
@@ -38,6 +41,8 @@ namespace Workboard.Infrastructure
             builder.Logging.AddSerilog(logger);
 
             builder.Services.AddHostedService<InitData>();
+
+            builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 
             return builder;
         }

@@ -36,26 +36,14 @@
             expand-separator
             expand-icon-toggle
             default-opened
-            label="SECTION1"
+            label="MENU"
           >
             <q-list>
-              <q-item clickable v-ripple active-class="bg-blue-1" to="/page1_1">
-                <q-item-section>Page1.1</q-item-section>
+              <q-item clickable v-ripple active-class="bg-blue-1" to="/boards">
+                <q-item-section>Boards</q-item-section>
               </q-item>
             </q-list>
           </q-expansion-item>
-          <q-expansion-item
-            expand-separator
-            expand-icon-toggle
-            default-opened
-            label="SECTION2"
-          >
-            <q-list>
-              <q-item clickable v-ripple active-class="bg-blue-1" to="/page2_1">
-                <q-item-section>Page2.1</q-item-section>
-              </q-item></q-list
-            ></q-expansion-item
-          >
         </q-list>
       </q-scroll-area>
     </q-drawer>

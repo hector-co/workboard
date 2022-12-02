@@ -1,0 +1,11 @@
+{
+  "name": "Workboard",
+  "settings": {
+    "apiPrefix": "workboard",
+    "databaseSchema": "workboard"
+  },
+  "model": {
+  },
+  "enums": {
+  }
+}

@@ -20,7 +20,6 @@ export default {
 
     return {
       data: createBoards([response.data.data])[0],
-      totalCount: response.data.totalCount,
       meta: response.data.meta,
     };
   },
@@ -41,10 +40,15 @@ export default {
       meta: response.data.meta,
     };
   },
-  async register(model: any): Promise<void> {
-    await api.post(`${ApiUrl}`, JSON.stringify(model), {
+  async register(model: any): Promise<Result<Board>> {
+    const response = await api.post(`${ApiUrl}`, JSON.stringify(model), {
       baseURL: BaseUrl,
     });
+
+    return {
+      data: createBoards([response.data.data])[0],
+      meta: response.data.meta,
+    };
   },
 };
 

@@ -1,7 +1,7 @@
 <template>
   <div class="prompt-dialog">
     <q-dialog ref="dialogRef" @hide="onDialogHide">
-      <q-card class="q-dialog-plugin">
+      <q-card class="container">
         <form @submit.prevent.stop="onSubmit">
           <q-card-section>
             <q-input
@@ -80,8 +80,8 @@ const onSubmit = () => {
 <style lang="scss">
 .prompt-dialog {
   .q-card.container {
-    width: 450px;
-    max-width: 450px;
+    width: 400px;
+    max-width: 400px;
   }
 }
 </style>

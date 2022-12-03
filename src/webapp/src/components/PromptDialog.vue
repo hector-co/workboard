@@ -10,7 +10,7 @@
               :label="message"
               autofocus
               :rules="valueRule"
-              lazy-rules
+              lazy-rules="ondemand"
             />
           </q-card-section>
           <q-card-actions align="right">
@@ -48,6 +48,14 @@ const props = defineProps({
     type: String,
     default: 'Cancel',
   },
+  required: {
+    type: Boolean,
+    default: true,
+  },
+  validationMessage: {
+    type: String,
+    default: 'Especify value',
+  },
 });
 
 defineEmits([...useDialogPluginComponent.emits]);
@@ -56,7 +64,9 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
   useDialogPluginComponent();
 
 const value = ref(props.defaultValue);
-const valueRule = [(val: string) => (val && val.length > 0) || 'Specify value'];
+const valueRule = props.required
+  ? [(val: string) => (val && val.length > 0) || props.validationMessage]
+  : [];
 const valueRef = ref<any>(null);
 
 const onSubmit = () => {
@@ -64,12 +74,8 @@ const onSubmit = () => {
 
   if (valueRef.value.hasError) return;
 
-  console.log('ok');
-};
-
-function onOKClick() {
   onDialogOK({ value: unref(value) });
-}
+};
 </script>
 <style lang="scss">
 .prompt-dialog {

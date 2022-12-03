@@ -26,6 +26,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
+import notifier from 'src/common/notifier';
 import PromptDialog from 'src/components/PromptDialog.vue';
 import { boardsSvc } from 'src/services';
 import { Board } from 'src/models';
@@ -48,6 +49,8 @@ const addBoard = () => {
     },
   }).onOk(async (result: { value: string }) => {
     const board = (await boardsSvc.register({ name: result.value })).data;
+
+    notifier.success('Board registered.');
 
     router.push({
       name: 'BoardDetails',

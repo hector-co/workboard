@@ -38,6 +38,19 @@ public class InitData : IHostedService
             await mediator.Send(new RegisterBoard("Board2"), cancellationToken);
             await mediator.Send(new RegisterBoard("Board3"), cancellationToken);
         }
+        if (!await context.Set<Developer>().AnyAsync(cancellationToken))
+        {
+            context.AddRange(new[]
+            {
+                new Developer { Name ="Developer1" },
+                new Developer { Name ="Developer2" },
+                new Developer { Name ="Developer3" },
+                new Developer { Name ="Developer4" },
+                new Developer { Name ="Developer5" }
+            });
+
+            await context.SaveChangesAsync(cancellationToken);
+        }
     }
 }
 

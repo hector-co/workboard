@@ -13,6 +13,8 @@ using Workboard.Application.Commands.Boards;
 using Workboard.Domain.Model;
 using Workboard.Infrastructure.DataAccess.EF;
 using Workboard.Infrastructure.DataAccess.EF.Boards;
+using Workboard.Infrastructure.DataAccess.EF.Cards;
+using Workboard.Infrastructure.DataAccess.EF.Developers;
 
 namespace Workboard.Infrastructure
 {
@@ -43,6 +45,8 @@ namespace Workboard.Infrastructure
             builder.Services.AddHostedService<InitData>();
 
             builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+            builder.Services.AddScoped<IDeveloperRepository, DeveloperRepository>();
+            builder.Services.AddScoped<ICardRepository, CardRepository>();
 
             return builder;
         }

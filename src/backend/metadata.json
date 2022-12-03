@@ -5,6 +5,33 @@
     "databaseSchema": "workboard"
   },
   "model": {
+    "Developer": {
+      "properties": {
+        "Name": {
+          "typeName": "string",
+          "size": 100
+        }
+      }
+    },
+    "Card": {
+      "properties": {
+        "Name": {
+          "typeName": "string",
+          "size": 100
+        },
+        "Description": "string",
+        "Owners": {
+          "typeName": "List<Developer>",
+          "withMany": true
+        },
+        "Priority": "CardPriority",
+        "EstimatedPoints": {
+          "typeName": "decimal",
+          "dbType": "decimal(3, 2)"
+        },
+        "State": "CardState"
+      }
+    },
     "Board": {
       "properties": {
         "Name": {
@@ -29,6 +56,9 @@
   "enums": {
     "CardState": {
       "values": [ "NotStarted", "InProgress", "Done", "Accepted", "Declined" ]
+    },
+    "CardPriority": {
+      "values": [ "Low", "Medium", "High" ]
     }
   }
 }

@@ -1,4 +1,4 @@
-namespace Workboard.Application.Queries.Boards;
+namespace Workboard.Application.Queries.Cards;
 
 public enum CardState
 {

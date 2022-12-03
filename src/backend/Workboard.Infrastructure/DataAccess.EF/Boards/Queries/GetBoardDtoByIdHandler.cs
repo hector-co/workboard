@@ -22,6 +22,18 @@ public class GetBoardDtoByIdHandler : IQueryHandler<GetBoardDtoById, BoardDto>
             .AsNoTracking()
             .FirstOrDefaultAsync(m => request.Id == m.Id, cancellationToken);
 
-        return new Result<BoardDto>(data?.Adapt<BoardDto>());
+        if(data == null)
+        {
+            return new Result<BoardDto>(null);
+        }
+
+        var boardDto = data.Adapt<BoardDto>();
+
+        boardDto = boardDto with
+        {
+            Columns = boardDto.Columns.OrderBy(c => c.Order).ToList()
+        };
+
+        return new Result<BoardDto>(boardDto);
     }
 }

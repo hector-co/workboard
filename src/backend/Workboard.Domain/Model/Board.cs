@@ -3,14 +3,14 @@ namespace Workboard.Domain.Model;
 public partial class Board
 {
 #nullable disable
-    private Board() { }
+    private Board() { _columns = new(); }
 #nullable enable
 
     private readonly List<Column> _columns;
 
     public Board(string name)
     {
-        _columns = new List<Column>();
+        _columns = new();
 
         Name = name;
     }

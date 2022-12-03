@@ -19,7 +19,6 @@ public class ListBoardDtoHandler : IQueryHandler<ListBoardDto, IEnumerable<Board
     public async Task<Result<IEnumerable<BoardDto>>> Handle(ListBoardDto request, CancellationToken cancellationToken)
     {
         var queryable = _context.Set<Board>()
-            .AddIncludes() 
             .AsNoTracking();
 
         queryable = queryable.ApplyQuery(request, applyOrderingAndPaging: false);

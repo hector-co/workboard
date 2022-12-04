@@ -21,7 +21,16 @@
           <div class="text-center">{{ item.name }}</div>
         </q-card-section>
         <q-separator />
-        <q-card-section></q-card-section>
+        <q-card-section>
+          <div v-if="index == 0" class="text-center">
+            <q-btn @click="addCard" label="Add card" outline color="primary" />
+          </div>
+          <div class="text-left">
+            <q-card v-for="bi in item.items" :key="bi.id" class="q-mt-md">
+              <q-card-section>{{ bi.card.name }}</q-card-section>
+            </q-card>
+          </div>
+        </q-card-section>
       </q-card>
     </q-virtual-scroll>
   </div>
@@ -29,20 +38,54 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useQuasar } from 'quasar';
 import { boardsSvc } from 'src/services';
-import { Board } from 'src/models';
+import { Board, BoardItem } from 'src/models';
+import NewCardDialog from './NewCardDialog.vue';
+import notifier from 'src/common/notifier';
 
 const route = useRoute();
+const $q = useQuasar();
+
 const model = ref<Board>(new Board());
-const columns = ref<Array<{ id: number; name: string }>>([
-  { id: 0, name: 'Backlog' },
-]);
+
+const columns = ref<
+  Array<{ id: number | undefined; name: string; items: Array<BoardItem> }>
+>([{ id: undefined, name: 'Backlog', items: [] }]);
+
+const addCard = () => {
+  $q.dialog({
+    component: NewCardDialog,
+    componentProps: {
+      boardId: model.value.id,
+    },
+  }).onOk(async () => {
+    notifier.success('Card added');
+    await loadItems();
+  });
+};
+
+const loadItems = async () => {
+  columns.value.forEach((col) => {
+    col.items = [];
+  });
+
+  const items = (await boardsSvc.listItems(model.value.id)).data;
+  items.forEach((i) => {
+    const col = columns.value.find((c) => c.id == i.columnId);
+    col?.items.push(i);
+  });
+};
 
 onMounted(async () => {
   const id = parseInt(<string>route.params.id);
   model.value = (await boardsSvc.get(id)).data;
 
-  columns.value.push(...model.value.columns);
+  columns.value.push(
+    ...model.value.columns.map((c) => ({ id: c.id, name: c.name, items: [] }))
+  );
+
+  await loadItems();
 });
 </script>
 <style lang="scss">

@@ -50,7 +50,7 @@ const addBoard = () => {
   }).onOk(async (result: { value: string }) => {
     const board = (await boardsSvc.register({ name: result.value })).data;
 
-    notifier.success('Board registered.');
+    notifier.success('Board registered');
 
     router.push({
       name: 'BoardDetails',

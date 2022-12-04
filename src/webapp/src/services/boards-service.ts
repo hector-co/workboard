@@ -1,5 +1,5 @@
 import { api } from 'src/boot/axios';
-import { Board } from 'src/models';
+import { Board, BoardItem } from 'src/models';
 import {
   filterToQueryString,
   QueryType,
@@ -50,10 +50,32 @@ export default {
       meta: response.data.meta,
     };
   },
+  async listItems(id: number): Promise<Result<Array<BoardItem>>> {
+    const response = await api.get(`${ApiUrl}/${id}/items`, {
+      baseURL: BaseUrl,
+    });
+
+    return {
+      data: createBoardItems(response.data.data),
+      totalCount: response.data.totalCount,
+      meta: response.data.meta,
+    };
+  },
+  async registerItem(id: number, model: any): Promise<void> {
+    await api.post(`${ApiUrl}/${id}/items`, JSON.stringify(model), {
+      baseURL: BaseUrl,
+    });
+  },
 };
 
 function createBoards(data: Array<any>): Board[] {
   if (!data) return [];
 
   return data.map((a) => Board.create(a));
+}
+
+function createBoardItems(data: Array<any>): BoardItem[] {
+  if (!data) return [];
+
+  return data.map((a) => BoardItem.create(a));
 }

@@ -51,6 +51,14 @@
         "Order": "int"
       },
       "isRoot": false
+    },
+    "BoardItem": {
+      "properties": {
+        "Board": "Board",
+        "Column": "Column?",
+        "Card": "Card",
+        "Order": "int"
+      }
     }
   },
   "enums": {

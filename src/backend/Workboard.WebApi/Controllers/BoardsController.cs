@@ -3,6 +3,7 @@ using MediatR;
 using Workboard.Application.Queries.Boards;
 using Workboard.Application.Commands.Boards;
 using QueryX;
+using Workboard.Application.Queries.BoardItems;
 
 namespace Workboard.WebApi.Controllers;
 
@@ -42,5 +43,22 @@ public class BoardsController : ControllerBase
         response.Verify();
         var model = await _mediator.Send(new GetBoardDtoById(response.Value), cancellationToken);
         return CreatedAtRoute("GetBoardById", new { id = response.Value }, model);
+    }
+
+    [HttpGet("{id}/items")]
+    public async Task<IActionResult> ListBoardItems(int id, [FromQuery] QueryModel queryModel, CancellationToken cancellationToken)
+    {
+        var query = _queryBuilder.CreateQuery<ListBoardItemDto, BoardItemDto>(queryModel);
+        query.BoardId = id;
+        var result = await _mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPost("{id}/items")]
+    public async Task<IActionResult> AddBoardItem(int id, [FromBody] AddBoardItem command, CancellationToken cancellationToken)
+    {
+        command.BoardId = id;
+        await _mediator.Send(command, cancellationToken);
+        return Accepted();
     }
 }

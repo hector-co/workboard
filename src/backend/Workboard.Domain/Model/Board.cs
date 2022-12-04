@@ -27,4 +27,9 @@ public partial class Board
         _columns.Add(column);
         return column;
     }
+
+    public BoardItem AddBoardItem(Column? column, Card card, int order)
+    {
+        return new BoardItem(this, column, card, order);
+    }
 }

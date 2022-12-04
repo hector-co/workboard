@@ -16,7 +16,6 @@ public class DeveloperRepository : IDeveloperRepository
     {
         return await _context.Set<Developer>()
             .Where(d => ids.Contains(d.Id))
-            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 }

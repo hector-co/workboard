@@ -16,6 +16,7 @@ public class DatabaseManager
             DbAdapter = DbAdapter.Postgres,
             TablesToIgnore = new Table[]
             {
+                "Developer",
                 "__EFMigrationsHistory"
             },
             SchemasToInclude = new[] { "workboard" },

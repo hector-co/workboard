@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Workboard.Infrastructure.DataAccess.EF.Developers;
 using Workboard.Infrastructure.DataAccess.EF.Cards;
 using Workboard.Infrastructure.DataAccess.EF.Boards;
+using Workboard.Infrastructure.DataAccess.EF.BoardItems;
 
 namespace Workboard.Infrastructure.DataAccess.EF;
 
@@ -24,5 +25,6 @@ public class WorkboardContext : DbContext
         modelBuilder.ApplyConfiguration(new CardConfiguration(dbSchema));
         modelBuilder.ApplyConfiguration(new BoardConfiguration(dbSchema));
         modelBuilder.ApplyConfiguration(new ColumnConfiguration(dbSchema));
+        modelBuilder.ApplyConfiguration(new BoardItemConfiguration(dbSchema));
     }
 }

@@ -27,6 +27,11 @@ public class Response
         return new Response(error);
     }
 
+    public static Response Failure(string code, string message, Exception? innerException = null)
+    {
+        return new Response(new Error(code, message, innerException));
+    }
+
     public static Response<TValue> Success<TValue>(TValue value)
     {
         return Response<TValue>.Success(value);

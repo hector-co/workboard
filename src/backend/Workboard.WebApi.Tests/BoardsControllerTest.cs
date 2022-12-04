@@ -51,7 +51,7 @@ public class BoardsControllerTest
             .ReceiveJson<Result<BoardDto>>())
             .Data!;
 
-        var cmd = new AddBoardItem(null, "card1", "", new[] { 1, 2 }.ToList(), 1, 8);
+        var cmd = new AddBoardItem("card1", "", new[] { 1, 2 }.ToList(), 1, 8);
 
 
         await _client.Request($"workboard/boards/{board.Id}/items")

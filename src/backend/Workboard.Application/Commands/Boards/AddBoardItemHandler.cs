@@ -28,19 +28,6 @@ public class AddBoardItemHandler : ICommandHandler<AddBoardItem>
             return Response.Failure("BoardItem.Register.BoardNotFound", "Board not found");
         }
 
-        if (request.ColumnId != null)
-        {
-            if (!board.Columns.Any(c => c.Id == request.ColumnId.Value))
-            {
-                return Response.Failure("BoardItem.Register.ColumnNotFound", "Column not found");
-            }
-        }
-
-        var column = request.ColumnId == null
-            ? null
-            : board.Columns.First(c => c.Id == request.ColumnId);
-
-
         var cardOwners = await _developerRepo.GetByIds(request.OwnersId, cancellationToken);
 
         var card = new Card(request.Name, request.Description, request.Priority, request.EstimatedPoints, cardOwners);
@@ -48,9 +35,9 @@ public class AddBoardItemHandler : ICommandHandler<AddBoardItem>
         await _cardRepo.Save(card, cancellationToken);
 
 
-        var maxOrder = await _boardItemRepo.GetMaxOrder(board.Id, column?.Id);
+        var maxOrder = await _boardItemRepo.GetMaxOrder(board.Id, null);
 
-        var boardItem = board.AddBoardItem(column, card, maxOrder + 1);
+        var boardItem = board.AddBoardItem(null, card, maxOrder + 1);
 
         await _boardItemRepo.Save(boardItem, cancellationToken);
 

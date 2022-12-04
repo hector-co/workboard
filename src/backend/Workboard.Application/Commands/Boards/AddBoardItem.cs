@@ -4,7 +4,6 @@ using Workboard.Application.Abstractions.Commands;
 namespace Workboard.Application.Commands.Boards;
 
 public record AddBoardItem(
-    int? ColumnId,
     string Name,
     string Description,
     List<int> OwnersId,

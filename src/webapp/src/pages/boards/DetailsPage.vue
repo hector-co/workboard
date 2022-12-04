@@ -26,9 +26,21 @@
             <q-btn @click="addCard" label="Add card" outline color="primary" />
           </div>
           <div class="text-left">
-            <q-card v-for="bi in item.items" :key="bi.id" class="q-mt-md">
-              <q-card-section>{{ bi.card.name }}</q-card-section>
-            </q-card>
+            <draggable
+              v-model="item.items"
+              :group="{ name: 'myGroup' }"
+              item-key="id"
+              title="5"
+              @end="cardMoving"
+              style="height: 500px"
+              :data-column-id="item.id"
+            >
+              <template #item="{ element }">
+                <q-card class="q-mt-md" :data-card-id="element.id">
+                  <q-card-section>{{ element.card.name }}</q-card-section>
+                </q-card>
+              </template>
+            </draggable>
           </div>
         </q-card-section>
       </q-card>
@@ -39,6 +51,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
+import draggable from 'vuedraggable';
 import { boardsSvc } from 'src/services';
 import { Board, BoardItem } from 'src/models';
 import NewCardDialog from './NewCardDialog.vue';
@@ -63,6 +76,21 @@ const addCard = () => {
     notifier.success('Card added');
     await loadItems();
   });
+};
+
+const cardMoving = (event: any) => {
+  const oldIndex = parseInt(event.oldIndex);
+
+  const newIndex = parseInt(event.newIndex);
+
+  const fromColumnId =
+    event.from.getAttribute('data-column-id') == undefined
+      ? undefined
+      : parseInt(event.from.getAttribute('data-column-id'));
+
+  const toColumnId = parseInt(event.to.getAttribute('data-column-id'));
+
+  const cardId = event.item.getAttribute('data-card-id');
 };
 
 const loadItems = async () => {

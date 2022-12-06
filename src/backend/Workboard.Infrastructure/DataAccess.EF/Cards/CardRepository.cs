@@ -13,7 +13,8 @@ public class CardRepository : ICardRepository
 
     public async Task Save(Card card, CancellationToken cancellationToken = default)
     {
-        _context.Add(card);
+        if (card.Id == 0)
+            _context.Add(card);
 
         await _context.SaveChangesAsync(cancellationToken);
     }

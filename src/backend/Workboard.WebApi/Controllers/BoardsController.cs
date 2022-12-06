@@ -61,4 +61,13 @@ public class BoardsController : ControllerBase
         await _mediator.Send(command, cancellationToken);
         return Accepted();
     }
+
+    [HttpPost("{id}/items/{itemId}/move-to")]
+    public async Task<IActionResult> MoveItem(int id, int itemId, [FromBody] MoveBoardItem command, CancellationToken cancellationToken)
+    {
+        command.BoardId = id;
+        command.BoardItemId = itemId;
+        await _mediator.Send(command, cancellationToken);
+        return Accepted();
+    }
 }

@@ -27,5 +27,5 @@ public partial class Card
     public IEnumerable<Developer> Owners => _owners.AsReadOnly();
     public int Priority { get; private set; }
     public decimal EstimatedPoints { get; private set; }
-    public int State { get; private set; }
+    public int State { get; set; }
 }

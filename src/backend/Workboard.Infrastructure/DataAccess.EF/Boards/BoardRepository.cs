@@ -14,12 +14,15 @@ namespace Workboard.Infrastructure.DataAccess.EF.Boards
 
         public async Task<Board?> GetById(int id, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<Board>().FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
+            return await _context.Set<Board>()
+                .Include(b => b.Columns)
+                .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
         }
 
         public async Task Save(Board board, CancellationToken cancellationToken = default)
         {
-            _context.Add(board);
+            if (board.Id == 0)
+                _context.Add(board);
 
             await _context.SaveChangesAsync(cancellationToken);
         }

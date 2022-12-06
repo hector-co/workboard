@@ -31,12 +31,12 @@
               :group="{ name: 'myGroup' }"
               item-key="id"
               title="5"
-              @end="cardMoving"
+              @end="cardMoved"
               style="height: 500px"
               :data-column-id="item.id"
             >
               <template #item="{ element }">
-                <q-card class="q-mt-md" :data-card-id="element.id">
+                <q-card class="q-mt-md" :data-item-id="element.id">
                   <q-card-section>{{ element.card.name }}</q-card-section>
                 </q-card>
               </template>
@@ -78,19 +78,19 @@ const addCard = () => {
   });
 };
 
-const cardMoving = (event: any) => {
-  const oldIndex = parseInt(event.oldIndex);
-
+const cardMoved = async (event: any) => {
   const newIndex = parseInt(event.newIndex);
-
-  const fromColumnId =
-    event.from.getAttribute('data-column-id') == undefined
-      ? undefined
-      : parseInt(event.from.getAttribute('data-column-id'));
 
   const toColumnId = parseInt(event.to.getAttribute('data-column-id'));
 
-  const cardId = event.item.getAttribute('data-card-id');
+  const itemId = event.item.getAttribute('data-item-id');
+
+  await boardsSvc.moveItem(model.value.id, itemId, {
+    columnId: toColumnId,
+    order: newIndex + 1,
+  });
+
+  await loadItems();
 };
 
 const loadItems = async () => {

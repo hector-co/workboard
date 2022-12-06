@@ -66,6 +66,15 @@ export default {
       baseURL: BaseUrl,
     });
   },
+  async moveItem(id: number, itemId: number, model: any): Promise<void> {
+    await api.post(
+      `${ApiUrl}/${id}/items/${itemId}/move-to`,
+      JSON.stringify(model),
+      {
+        baseURL: BaseUrl,
+      }
+    );
+  },
 };
 
 function createBoards(data: Array<any>): Board[] {

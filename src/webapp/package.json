@@ -17,9 +17,11 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "quasar": "^2.6.0",
+    "vee-validate": "^4.7.3",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^4.1.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.0.0",

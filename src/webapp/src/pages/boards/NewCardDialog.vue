@@ -2,42 +2,71 @@
   <div class="new-card-dialog">
     <q-dialog ref="dialogRef" @hide="onDialogHide">
       <q-card class="container">
-        <form @submit.prevent.stop="onSubmit">
+        <Form
+          :validation-schema="validationSchema"
+          :initial-values="defaultValues"
+          @submit="onSubmit"
+          autocomplete="off"
+        >
           <q-card-section>
             <span class="text-h6">Add Card</span>
-            <q-input v-model="model.name" label="Name" autofocus />
+            <Field name="name" v-slot="{ errorMessage, value, field }">
+              <q-input
+                label="Name"
+                :model-value="value"
+                v-bind="field"
+                :error-message="errorMessage"
+                :error="!!errorMessage"
+                autofocus
+              />
+            </Field>
             <label>
-              <div class="q-field__label q-mt-md">Description</div>
+              <div class="q-field__label q-mt-sm">Description</div>
               <q-editor
-                v-model="model.description"
-                max-height="5rem"
-                min-height="5rem"
+                v-model="description"
+                max-height="8rem"
+                min-height="8rem"
               />
             </label>
-            <q-select
-              v-model="model.ownersId"
-              :options="ownerOptions"
-              label="Owners"
-              multiple
-              emit-value
-              map-options
-            />
+            <Field name="ownersId" v-slot="{ value, field }">
+              <q-select
+                label="Owners"
+                :options="ownerOptions"
+                :model-value="value"
+                v-bind="field"
+                multiple
+                emit-value
+                map-options
+              />
+            </Field>
             <div class="row q-col-gutter-md">
               <div class="col-8">
-                <q-select
-                  v-model="model.priority"
-                  :options="priorityOptions"
-                  label="Priority"
-                  emit-value
-                  map-options
-                />
+                <Field name="priority" v-slot="{ value, field }">
+                  <q-select
+                    label="Priority"
+                    :options="priorityOptions"
+                    :model-value="value"
+                    v-bind="field"
+                    emit-value
+                    map-options
+                  />
+                </Field>
               </div>
               <div class="col-4">
-                <q-input
-                  label="Estimated points"
-                  v-model.number="model.estimatedPoints"
-                  input-class="text-right"
-                />
+                <Field
+                  name="estimatedPoints"
+                  v-slot="{ errorMessage, value, field }"
+                >
+                  <q-input
+                    label="Estimated points"
+                    input-class="text-right"
+                    :model-value="value"
+                    v-bind="field"
+                    :error-message="errorMessage"
+                    :error="!!errorMessage"
+                    autofocus
+                  />
+                </Field>
               </div>
             </div>
           </q-card-section>
@@ -50,13 +79,16 @@
               outline
             />
           </q-card-actions>
-        </form>
+        </Form>
       </q-card>
     </q-dialog>
   </div>
 </template>
 <script setup lang="ts">
-import { reactive, ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+import { Form, Field } from 'vee-validate';
+import * as yup from 'yup';
+import { merge } from 'lodash';
 import { useDialogPluginComponent } from 'quasar';
 import { boardsSvc, developersSvc } from 'src/services';
 
@@ -72,13 +104,20 @@ const props = defineProps({
   },
 });
 
-const model = reactive({
-  name: '',
-  description: '',
+const description = ref('');
+
+const validationSchema = yup.object({
+  name: yup.string().required().label('Name'),
+  ownersId: yup.array().label('Owners'),
+  priority: yup.number().min(0).max(2).label('Priority'),
+  estimatedPoints: yup.number().required().label('Estimated points'),
+});
+
+const defaultValues = {
   ownersId: [],
   priority: 1,
   estimatedPoints: 3,
-});
+};
 
 const priorityOptions = [
   { value: 0, label: 'Low' },
@@ -93,9 +132,9 @@ onMounted(async () => {
   ownerOptions.value.push(...devs.map((d) => ({ value: d.id, label: d.name })));
 });
 
-const onSubmit = async () => {
+const onSubmit = async (values: any) => {
+  const model = merge(values, { description: description.value });
   await boardsSvc.registerItem(props.boardId, model);
-
   onDialogOK();
 };
 </script>

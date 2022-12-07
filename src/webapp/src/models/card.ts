@@ -7,7 +7,7 @@ export class Card {
   name = '';
   description = '';
   owners: Array<Developer> = [];
-  priority = 0;
+  priority = '';
   estimatedPoints = 0;
   state = 0;
 

@@ -36,8 +36,22 @@
               :data-column-id="item.id"
             >
               <template #item="{ element }">
-                <q-card class="q-mt-md" :data-item-id="element.id">
-                  <q-card-section>{{ element.card.name }}</q-card-section>
+                <q-card class="card q-mt-md" :data-item-id="element.id">
+                  <q-card-section class="card-name">
+                    <div class="text-subtitle2">
+                      {{ element.card.name }}
+                    </div>
+                  </q-card-section>
+                  <q-card-section
+                    ><div class="row">
+                      <div class="col text-caption">
+                        {{ element.card.priority }}
+                      </div>
+                      <div class="col text-caption text-right">
+                        {{ element.card.estimatedPoints }}
+                      </div>
+                    </div></q-card-section
+                  >
                 </q-card>
               </template>
             </draggable>
@@ -121,6 +135,15 @@ onMounted(async () => {
   .card-column {
     width: 250px;
     min-height: 550px;
+  }
+
+  .card {
+    .card-name {
+      padding: 8px 8px 0 8px !important;
+    }
+    .q-card__section {
+      padding: 8px;
+    }
   }
 }
 </style>
